@@ -1,24 +1,37 @@
-const btnEl = document.getElementById("btn");
-const bmiInputEl = document.getElementById("bmi-result");
-const weightConditionEl = document.getElementById("weight-condition");
+let button = document.getElementById('btn');
 
-function calculateBMI() {
-  const heightValue = document.getElementById("height").value / 100;
-  const weightValue = document.getElementById("weight").value;
+button.addEventListener('click', () => {
+    const height = parseInt(document.getElementById('height').value);
+    const weight = parseInt(document.getElementById('weight').value);
+    const result = document.getElementById('output');
+    let height_status=false, weight_status=false;
 
-  const bmiValue = weightValue / (heightValue * heightValue);
+    if(height === '' || isNaN(height) || (height <= 0)){
+        document.getElementById('height_error').innerHTML = 'Please provide a valid height';
+    }else{
+        document.getElementById('height_error').innerHTML = '';
+        height_status=true;
+    }
 
-  bmiInputEl.value = bmiValue;
+    if(weight === '' || isNaN(weight) || (weight <= 0)){
+        document.getElementById('weight_error').innerHTML = 'Please provide a valid weight';
+    }else{
+        document.getElementById('weight_error').innerHTML = '';
+        weight_status=true;
+    }
 
-  if (bmiValue < 18.5) {
-    weightConditionEl.innerText = "Under weight";
-  } else if (bmiValue >= 18.5 && bmiValue <= 24.9) {
-    weightConditionEl.innerText = "Normal weight";
-  } else if (bmiValue >= 25 && bmiValue <= 29.9) {
-    weightConditionEl.innerText = "Overweight";
-  } else if (bmiValue >= 30) {
-    weightConditionEl.innerText = "Obesity";
-  }
-}
+    if(height_status && weight_status){
+        const bmi = (weight / ((height*height)/10000)).toFixed(2);
 
-btnEl.addEventListener("click", calculateBMI);
+        if(bmi < 18.6){
+            result.innerHTML = 'Under weight : ' + bmi;
+        }else if(bmi >= 18.6 && bmi < 24.9){
+            result.innerHTML = 'Normal : ' + bmi;
+        }else{
+            result.innerHTML = 'Over weight : ' + bmi;
+        }
+    }else{
+        alert('The form has errors');
+        result.innerHTML = '';
+    }
+});
